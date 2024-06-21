@@ -5,40 +5,47 @@ class FIFO(Cache):
     """
     Implementation of First In First Out cache policy
     """
-    def __init__(self, capacity: int) -> None:
+    def __init__(self, capacity):
         super().__init__(capacity)
         self.queue = []
         self.lock = threading.Lock()
 
-    def set(self, key: int, value: int) -> str:
+    def set(self, key, value):
         with self.lock:
             for item in self.queue:
                 if item[0] == key:
                     item[1] = value
-                    return "Key updated"
-            if len(self.queue) == self.capacity:
+                    print(f"Key {key} is updated")
+
+            if len(self.queue) >= self.capacity:
                 self.queue.pop(0)
                 self.queue.append([key, value])
-                return "Key value pair set"
+                print(f"Key: {key} with value {value} is set")
             self.queue.append([key, value])
+            print(f"Key: {key} with value {value} is set")
+            return
             
     
-    def get(self, key: int) -> str:
+    def get(self, key):
         with self.lock:
             for item in self.queue:
                 if item[0] == key:
-                    return item[1]
-            return "Not found"
+                    print(f"Value associated with key: {key} is {item[0]}")
+                    return
+            print(f"Key {key} not found")
+            return
     
-    def delete(self, key: int) -> str:
+    def delete(self, key):
         with self.lock:
             for item in self.queue:
                 if item[0] == key:
                     self.queue.remove(item)
-                    return "Item successfully removed"
-            return "The given key doesn't exist"
+                    print(f"{key} is deleted")
+                    return
+            print("The given key doesn't exist")
+            return
     
-    def view(self) -> None:
+    def view(self):
         with self.lock:
             for item in self.queue:
                 print(f"Key: {item[0]}, Value: {item[1]}")

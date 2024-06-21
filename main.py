@@ -2,7 +2,7 @@ import argparse
 
 def main():
     parser = argparse.ArgumentParser(description='Add the caching strategy')
-    parser.add_argument('strategy', metavar='type', type=str, choices=['fifo', 'lifo', 'lru', 'lfu'], help='Select the cache type')
+    parser.add_argument('strategy', metavar='type', type=str, choices=['fifo', 'lifo', 'lru', 'lfu', 'expiry', 'random'], help='Select the cache type')
     parser.add_argument('capacity', metavar='c', type=int, help='Add the cache capacity')
     args = parser.parse_args()
     
@@ -21,6 +21,15 @@ def main():
     elif args.strategy == 'lfu':
         from src.lfu import LFU
         cache = LFU(args.capacity)
+
+    elif args.strategy == 'expiry':
+        from src.expiry import Expiry
+        ttl = int(input("Please enter the time to live for the the cache: "))
+        cache = Expiry(args.capacity, ttl)
+
+    elif args.strategy == 'random':
+        from src.random import RandomReplacement
+        cache = RandomReplacement(args.capacity)
 
     else:
         print("Please provide a valid input")

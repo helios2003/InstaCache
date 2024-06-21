@@ -1,48 +1,51 @@
 from src.base import Cache
 import threading
+import random
 
-class LIFO(Cache):
+class RandomReplacement(Cache):
     """
-    Implementation of Last In First Out cache policy
+    Implements random replacement caching strategy
     """
-    def __init__(self, capacity: int):
+    def __init__(self, capacity: int) -> None:
         super().__init__(capacity)
-        self.stack = []
+        self.array = []
         self.lock = threading.Lock()
 
     def set(self, key, value):
         if self.lock:
-            for item in self.stack:
+            for item in self.array:
                 if item[0] == key:
                     item[1] = value
                     print(f"Key {key} is updated")
                     return
-            if len(self.stack) == self.capacity:
-                self.stack.pop(-1)
-                self.stack.append([key, value])
+            if len(self.array) == self.capacity:
+                index = random.randint(0, self.capacity - 1)
+                self.array.pop(index)
+                self.array.append([key, value])
                 print(f"Key: {key} with value {value} is set")
                 return
+            self.array.append([key, value])
             print(f"Key: {key} with value {value} is set")
             return
 
     def get(self, key):
-        if self.lock:
-            for item in self.stack:
+        with self.lock:
+            for item in self.array:
                 if item[0] == key:
                     print(f"Value associated with key: {key} is {item[0]}")
                     return
             print(f"Key {key} not found")
             return
-    
+        
     def delete(self, key):
         if self.lock:
-            for item in self.queue:
+            for item in self.array:
                 if item[0] == key:
-                    self.stack.remove(item)
+                    self.array.remove(item)
                     return "Item successfully removed"
             return "The given key doesn't exist"
-    
+
     def view(self):
-        if self.lock:
-            for index in range(len(self.stack) - 1, -1, -1):
-                print(f"Key: {self.stack[index][0]}, Value: {self.stack[index][1]}")
+        with self.lock:
+            for item in self.array:
+                print(f"Key: {item[0]}, Value: {item[1]}")
