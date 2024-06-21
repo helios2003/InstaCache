@@ -1,4 +1,4 @@
-from base import Cache
+from src.base import Cache
 
 class Node:
     def __init__(self, val= 0, prev=None, next=None):

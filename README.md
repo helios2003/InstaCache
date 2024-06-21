@@ -9,13 +9,14 @@ The algorithms implmented are listed below:
 - LRU (Least Recently Used)
 - LFU (Least Frequently Used)
 
-## How to get started ?
+## Getting started
 - Create a fork or clone the repository directly using the command:
 ```
 git clone https://github.com/helios2003/InstaCache.git
 ```
 - Change directory to `InstaCache`.
-
+- Run the command ``python main.py <caching-strategy> <capacity>``.
+- After that a menu driven program appears from which the necessary operation can be selected.
 
 ## Requirements:
 - Python 3.xx

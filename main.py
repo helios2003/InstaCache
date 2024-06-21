@@ -7,19 +7,19 @@ def main():
     args = parser.parse_args()
     
     if args.strategy == 'fifo':
-        from fifo import FIFO
+        from src.fifo import FIFO
         cache = FIFO(args.capacity)
 
     elif args.strategy == 'lifo':
-        from lifo import LIFO
+        from src.lifo import LIFO
         cache = LIFO(args.capacity)
 
     elif args.strategy == 'lru':
-        from lru import LRU
+        from src.lru import LRU
         cache = LRU(args.capacity)
 
     elif args.strategy == 'lfu':
-        from lfu import LFU
+        from src.lfu import LFU
         cache = LFU(args.capacity)
 
     else:
@@ -47,4 +47,5 @@ def main():
         else:
             print("Please provide a valid option")
 
-main()
+if __name__ == '__main__':
+    main()
