@@ -1,6 +1,7 @@
 from src.base import Cache
 import threading
 import random
+import logging
 
 class RandomReplacement(Cache):
     """
@@ -10,6 +11,8 @@ class RandomReplacement(Cache):
         super().__init__(capacity)
         self.array = []
         self.lock = threading.Lock()
+        logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
+        self.logger = logging.getLogger(__name__)
 
     def set(self, key, value):
         if self.lock:
@@ -26,16 +29,16 @@ class RandomReplacement(Cache):
                 return
             self.array.append([key, value])
             print(f"Key: {key} with value {value} is set")
-            return
+            return 
 
     def get(self, key):
         with self.lock:
             for item in self.array:
                 if item[0] == key:
-                    print(f"Value associated with key: {key} is {item[0]}")
-                    return
+                    print(f"Value associated with key: {key} is {item[1]}")
+                    return item[1]
             print(f"Key {key} not found")
-            return
+            return None
         
     def delete(self, key):
         if self.lock:
@@ -48,4 +51,4 @@ class RandomReplacement(Cache):
     def view(self):
         with self.lock:
             for item in self.array:
-                print(f"Key: {item[0]}, Value: {item[1]}")
+                self.logger.info(f"Key: {item[0]}, Value: {item[1]}")

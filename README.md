@@ -18,6 +18,12 @@ git clone https://github.com/helios2003/InstaCache.git
 - Run the command ``python main.py <caching-strategy> <capacity>``.
 - After that a menu driven program appears from which the necessary operation can be selected.
 
+## Testing
+- Few tests have also been written for each strategy in the `tests/` directory which can be run using:
+```
+python -m unittest discover -s tests
+```
+
 ## Requirements:
 - Python 3.xx
 
