@@ -15,18 +15,15 @@ class RandomReplacement(Cache):
         self.logger = logging.getLogger(__name__)
 
     def set(self, key, value):
-        if self.lock:
+        with self.lock:
             for item in self.array:
                 if item[0] == key:
                     item[1] = value
                     self.logger.info(f"Key {key} is updated")
                     return
-            if len(self.array) == self.capacity:
+            if len(self.array) >= self.capacity:
                 index = random.randint(0, self.capacity - 1)
                 self.array.pop(index)
-                self.array.append([key, value])
-                self.logger.info(f"Key: {key} with value {value} is set")
-                return
             self.array.append([key, value])
             self.logger.info(f"Key: {key} with value {value} is set")
             return 
@@ -41,12 +38,14 @@ class RandomReplacement(Cache):
             return None
         
     def delete(self, key):
-        if self.lock:
+        with self.lock:
             for item in self.array:
                 if item[0] == key:
                     self.array.remove(item)
+                    self.logger.info(f"Key {key} is deleted")
                     return "Item successfully removed"
-            return "The given key doesn't exist"
+            self.logger.info(f"Key {key} not found")
+            return None
 
     def view(self):
         with self.lock:

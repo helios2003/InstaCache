@@ -24,7 +24,7 @@ def main():
 
     elif args.strategy == 'expiry':
         from src.expiry import Expiry
-        ttl = int(input("Please enter the time to live for the the cache: "))
+        ttl = int(input("Please enter the time to live for the cache: "))
         cache = Expiry(args.capacity, ttl)
 
     elif args.strategy == 'random':

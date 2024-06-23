@@ -22,7 +22,6 @@ class FIFO(Cache):
                     return
             if len(self.queue) >= self.capacity:
                 self.queue.pop(0)
-                self.logger.info(f"Key: {key} with value {value} is set")
             self.queue.append([key, value])
             self.logger.info(f"Key: {key} with value {value} is set")
             return
@@ -41,10 +40,10 @@ class FIFO(Cache):
             for item in self.queue:
                 if item[0] == key:
                     self.queue.remove(item)
-                    self.logger.info(f"{key} is deleted")
+                    self.logger.info(f"Key: {key} is deleted")
                     return "Item successfully removed"
-            self.logger.info("The given key doesn't exist")
-            return "The given key doesn't exist"
+            self.logger.info(f"The key {key} doesn't exist")
+            return None
     
     def view(self):
         with self.lock:

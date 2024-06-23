@@ -19,15 +19,12 @@ class LIFO(Cache):
                 if item[0] == key:
                     item[1] = value
                     self.logger.info(f"Key {key} is updated")
-
+                    return
             if len(self.stack) >= self.capacity:
                 self.stack.pop(-1)
-                self.stack.append([key, value])
-                self.logger.info(f"Key: {key} with value {value} is set")
-            else:
-                self.stack.append([key, value])
-                self.logger.info(f"Key: {key} with value {value} is set")
-                return
+            self.stack.append([key, value])
+            self.logger.info(f"Key: {key} with value {value} is set")
+            return
             
     def get(self, key):
         with self.lock:
@@ -43,10 +40,10 @@ class LIFO(Cache):
             for item in self.stack:
                 if item[0] == key:
                     self.stack.remove(item)
-                    self.logger.info(f"{key} is deleted")
+                    self.logger.info(f"Key: {key} is deleted")
                     return "Item successfully removed"
             self.logger.info(f"Key {key} doesn't exist")
-            return "The given key doesn't exist"
+            return None
     
     def view(self):
         with self.lock:

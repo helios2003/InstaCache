@@ -46,8 +46,10 @@ class LRU(Cache):
                 node.val = val
                 self._remove(node)
                 self._add(node)
+                self.logger.info(f"Value associated with {key} is updated")
+                return
             else:
-                if len(self.dict) == self.capacity:
+                if len(self.dict) >= self.capacity:
                     lru_node = self.end.prev
                     self._remove(lru_node)
                     del self.dict[lru_node.key]
@@ -61,8 +63,10 @@ class LRU(Cache):
                 node = self.dict[key]
                 self._remove(node)
                 self._add(node)
+                self.logger.info(f"Value associated with key: {key} is {node.val}")
                 return node.val
-            return "Not found"
+            self.logger.info(f"Key: {key} not found")
+            return None
 
     def delete(self, key):
         with self.lock:
@@ -71,9 +75,10 @@ class LRU(Cache):
                 self._remove(node)
                 del self.dict[key]
                 return "Item successfully removed"
-            return "The given key doesn't exist"
+            return None
 
     def view(self):
+        # Arranged from most recently used to least recently used
         with self.lock:
             current = self.start.next
             while current != self.end:

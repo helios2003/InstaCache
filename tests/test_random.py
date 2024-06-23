@@ -1,5 +1,7 @@
 import unittest
-import threading
+from threading import Thread
+import random
+import logging
 import sys
 sys.path.append('..')
 from src.random import RandomReplacement
@@ -24,7 +26,7 @@ class RandomReplacementTest(unittest.TestCase):
         self.assertEqual(self.array.get("key1"), None)
 
     def test_delete_non_existing_key(self):
-        self.assertEqual(self.array.delete("key1"), "The given key doesn't exist")
+        self.assertEqual(self.array.delete("key1"), None)
 
     def test_eviction_when_full(self):
         self.array.set("key1", "value1")
@@ -43,5 +45,41 @@ class RandomReplacementTest(unittest.TestCase):
         self.assertIn("Key: key2, Value: value2", log.output[1])
         self.assertIn("Key: key3, Value: value3", log.output[2])
 
+    ############ Concurrency Tests #####################
+    
+    def test_concurrency(self):
+        num_threads = 10
+        ops_per_thread = 100
+    
+        def worker(self):
+            for _ in range(ops_per_thread):
+                operation = random.choice(['set', 'get', 'delete'])
+                key = f"key{random.randint(1, 20)}"
+                value = f"value{random.randint(1, 100)}"
+
+                if operation == 'set':
+                    self.array.set(key, value)
+                    retrieved_value = self.array.get(key)
+                    self.assertEqual(retrieved_value, value)
+                elif operation == 'get':
+                    try:
+                        retrieved_value = self.array.get(key)
+                        self.assertIsNotNone(retrieved_value)
+                    except Exception as e:
+                        logging.error(f"Error getting key {key}: {e}")
+                else: 
+                    self.array.delete(key)
+                    retrieved_value = self.array.get(key)
+                    self.assertIsNone(retrieved_value)
+
+        threads = []
+        for _ in range(num_threads):
+            t = Thread(target=worker, args=(self,))
+            threads.append(t)
+            t.start()
+            
+        for t in threads:
+            t.join()
+        self.assertLessEqual(len(self.array.array), self.array.capacity)
 if __name__ == '__main__':
     unittest.main()

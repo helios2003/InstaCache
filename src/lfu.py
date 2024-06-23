@@ -82,6 +82,8 @@ class LFU(Cache):
                 node = self.dict[key]
                 node.val = val
                 self._update_node_freq(node)
+                self.logger.info(f"Key: {key} is updated")
+                return
             else:
                 if self.size == self.capacity:
                     min_freq_list = self.freq_dict[self.min_freq]
@@ -89,7 +91,6 @@ class LFU(Cache):
                     if lfu_node:
                         del self.dict[lfu_node.key]
                         self.size -= 1
-                
                 new_node = Node(key, val)
                 self.dict[key] = new_node
                 if 1 not in self.freq_dict:
@@ -97,14 +98,18 @@ class LFU(Cache):
                 self.freq_dict[1].add_node(new_node)
                 self.min_freq = 1
                 self.size += 1
+                self.logger.info(f"Key: {key} with value {val} is set")
+                return
 
     def get(self, key):
         with self.lock:
             if key in self.dict:
                 node = self.dict[key]
                 self._update_node_freq(node)
+                self.logger.info(f"Value associated with key: {key} is {node.val}")
                 return node.val
-            return "The key not found"
+            self.logger.info(f"Key {key} not found")
+            return None
 
     def delete(self, key):
         with self.lock:
@@ -115,8 +120,10 @@ class LFU(Cache):
                     del self.freq_dict[node.freq]
                 del self.dict[key]
                 self.size -= 1
+                self.logger.info(f"Key {key} is deleted")
                 return "Item successfully removed"
-            return "The given key doesn't exist"
+            self.logger.info(f"Key {key} not found")
+            return None
 
     def view(self):
         with self.lock:

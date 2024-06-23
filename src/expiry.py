@@ -60,8 +60,8 @@ class Expiry(Cache):
             self._evict()
             if key in self.cache:
                 return self.cache[key][0]
-            self.logger.info("The {key} doesn't exist in the cache")
-            return 
+            self.logger.info(f"The {key} doesn't exist in the cache")
+            return None
         
     def delete(self, key):
         with self.lock:
