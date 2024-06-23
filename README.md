@@ -39,4 +39,10 @@ python -m unittest discover -s tests
 ## Requirements:
 - Python 3.xx
 
------------any exception``````
+## Brief Explanation of the Policies Implemented
+- **FIFO** : First In First Out. In this policy the first element that is inserted into the cache is the first element that is removed from the cache.
+- **LIFO** : Last In First Out. In this policy the last element that is inserted into the cache is the first element that is removed from the cache.
+- **LRU** : Least Recently Used. In this policy the element that was used the least recently is the first element that is removed from the cache
+- **LFU** : Least Frequently Used. In this policy the element that is used the least number of times is the first element that is removed from the cache. If there is a tie, the value that was least recently used is removed.
+- **TTL** : Time to Live. In this policy there is an expiration time for each element in the cache. The element is removed from the cache after the expiration time period.
+- **RR** : Random Replacement Strategy. In this policy while removal a random element is removed from the cache.

@@ -36,25 +36,28 @@ def main():
         exit(1)
 
     while True:
-        print("\n1. Set key-value\n2. Get value by key\n3. Delete key\n4. View cache\n5. Exit")
-        choice = int(input("Enter your choice: "))
-        if choice == 1:
-            key = input("Enter key: ")
-            value = input("Enter value: ")
-            cache.set(key, value)
-        elif choice == 2:
-            key = input("Enter key: ")
-            cache.get(key)
-        elif choice == 3:
-            key = input("Enter key: ")
-            cache.delete(key)
-        elif choice == 4:
-            cache.view()
-        elif choice == 5:
-            print("Exiting.....")
-            break
-        else:
-            print("Please provide a valid option")
+        try:
+            print("\n1. Set key-value\n2. Get value by key\n3. Delete key\n4. View cache\n5. Exit")
+            choice = int(input("Enter your choice: "))
+            if choice == 1:
+                key = input("Enter key: ")
+                value = input("Enter value: ")
+                cache.set(key, value)
+            elif choice == 2:
+                key = input("Enter key: ")
+                cache.get(key)
+            elif choice == 3:
+                key = input("Enter key: ")
+                cache.delete(key)
+            elif choice == 4:
+                cache.view()
+            elif choice == 5:
+                print("Exiting.....")
+                break
+            else:
+                print("Please provide a valid option")
+        except ValueError:
+            print("Please provide a valid integer input between 1 to 5")
 
 if __name__ == '__main__':
     main()
