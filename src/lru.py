@@ -1,5 +1,6 @@
 from src.base import Cache
 import threading
+import logging
 
 class Node:
     """
@@ -20,6 +21,8 @@ class LRU(Cache):
         self.start.next = self.end
         self.end.prev = self.start
         self.lock = threading.Lock()
+        logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
+        self.logger = logging.getLogger(__name__)
 
     # helper function associated with the linked list class
     def _add(self, node):
@@ -74,5 +77,5 @@ class LRU(Cache):
         with self.lock:
             current = self.start.next
             while current != self.end:
-                print(f"Key: {current.key}, Value: {current.val}")
+                self.logger.info(f"Key: {current.key}, Value: {current.val}")
                 current = current.next

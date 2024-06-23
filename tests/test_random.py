@@ -43,28 +43,5 @@ class RandomReplacementTest(unittest.TestCase):
         self.assertIn("Key: key2, Value: value2", log.output[1])
         self.assertIn("Key: key3, Value: value3", log.output[2])
 
-    ########### Thread Safety Tests ###################
-
-    # def test_concurrent_set_get(self):
-    #     def set_keys():
-    #         for i in range(50):
-    #             self.array.set(f"key{i}", f"value{i}")
-
-    #     def get_keys():
-    #         for i in range(50):
-    #             self.array.get(f"key{i}")
-
-    #     threads = []
-    #     for _ in range(10):
-    #         t1 = threading.Thread(target=set_keys)
-    #         t2 = threading.Thread(target=get_keys)
-    #         threads.append(t1)
-    #         threads.append(t2)
-    #         t1.start()
-    #         t2.start()
-
-    #     for t in threads:
-    #         t.join()
-
 if __name__ == '__main__':
     unittest.main()

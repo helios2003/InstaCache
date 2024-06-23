@@ -3,11 +3,17 @@
 ## Introduction
 This project aims to implement a thread safe in memory cache with an option to choose the algorithm one wishes to implement for cache insertion and cache eviction policy.
 
-The algorithms implmented are listed below:
+There are few standard algorithms that have been implemented and few that are use case specific.
+
+### Standard Cache Eviction Policies
 - FIFO (First In First Out)
 - LIFO (Last In First Out)
-- LRU (Least Recently Used)
 - LFU (Least Frequently Used)
+- LRU (Least Recently Used)
+
+### Custom Cache Eviction Policies
+- TTL (Time to Live)
+- RR (Random Replacement Strategy)
 
 ## Getting started
 - Create a fork or clone the repository directly using the command:
@@ -15,7 +21,13 @@ The algorithms implmented are listed below:
 git clone https://github.com/helios2003/InstaCache.git
 ```
 - Change directory to `InstaCache`.
-- Run the command ``python main.py <caching-strategy> <capacity>``.
+- To use the program write
+```
+python main.py <caching-strategy> <capacity>
+
+<caching-strategy>: fifo, lifo, lru, lfu, expiry, random
+<capcity>: An integer
+```
 - After that a menu driven program appears from which the necessary operation can be selected.
 
 ## Testing

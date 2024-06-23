@@ -19,5 +19,6 @@ class Cache(ABC):
     def delete(self, key: int) -> str:
         pass
 
+    @abstractmethod
     def view() -> None:
         pass

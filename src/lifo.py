@@ -4,7 +4,7 @@ import logging
 
 class LIFO(Cache):
     """
-    Implementation of First In First Out cache policy
+    Implementation of Last In First Out cache policy
     """
     def __init__(self, capacity):
         super().__init__(capacity)
@@ -18,24 +18,24 @@ class LIFO(Cache):
             for item in self.stack:
                 if item[0] == key:
                     item[1] = value
-                    print(f"Key {key} is updated")
+                    self.logger.info(f"Key {key} is updated")
 
             if len(self.stack) >= self.capacity:
                 self.stack.pop(-1)
                 self.stack.append([key, value])
-                print(f"Key: {key} with value {value} is set")
+                self.logger.info(f"Key: {key} with value {value} is set")
             else:
                 self.stack.append([key, value])
-                print(f"Key: {key} with value {value} is set")
+                self.logger.info(f"Key: {key} with value {value} is set")
                 return
             
     def get(self, key):
         with self.lock:
             for item in self.stack:
                 if item[0] == key:
-                    print(f"Value associated with key: {key} is {item[1]}")
+                    self.logger.info(f"Value associated with key: {key} is {item[1]}")
                     return item[1]
-            print(f"Key {key} not found")
+            self.logger.info(f"Key {key} not found")
             return None
     
     def delete(self, key):
@@ -43,12 +43,12 @@ class LIFO(Cache):
             for item in self.stack:
                 if item[0] == key:
                     self.stack.remove(item)
-                    print(f"{key} is deleted")
+                    self.logger.info(f"{key} is deleted")
                     return "Item successfully removed"
-            print("The given key doesn't exist")
+            self.logger.info(f"Key {key} doesn't exist")
             return "The given key doesn't exist"
     
     def view(self):
-        if self.lock:
+        with self.lock:
             for index in range(len(self.stack) - 1, -1, -1):
                 self.logger.info(f"Key: {self.stack[index][0]}, Value: {self.stack[index][1]}")

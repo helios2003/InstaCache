@@ -49,7 +49,7 @@ class ExpiryTest(unittest.TestCase):
 
     def test_ttl_expiry(self):
         self.cache.set("key1", "value1")
-        time.sleep(3)  #---> for checking the expiry
+        time.sleep(1)  #---> for checking the expiry
         self.assertEqual(self.cache.get("key1"), None)
         self.assertEqual(len(self.cache.cache), 0)
 

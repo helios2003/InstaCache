@@ -3,7 +3,7 @@ import argparse
 def main():
     parser = argparse.ArgumentParser(description='Add the caching strategy')
     parser.add_argument('strategy', metavar='type', type=str, choices=['fifo', 'lifo', 'lru', 'lfu', 'expiry', 'random'], help='Select the cache type')
-    parser.add_argument('capacity', metavar='c', type=int, help='Add the cache capacity')
+    parser.add_argument('capacity', metavar='cap', type=int, help='Add the cache capacity')
     args = parser.parse_args()
     
     if args.strategy == 'fifo':

@@ -52,7 +52,7 @@ class Expiry(Cache):
             expiry_time = time.time() + self.ttl
             self.cache[key] = [value, expiry_time]
             heapq.heappush(self.heap, [expiry_time, key])
-            print(f"Key: {key} with value {value} is set")
+            self.logger.info(f"Key: {key} with value {value} is set")
             return
 
     def get(self, key):
@@ -60,7 +60,7 @@ class Expiry(Cache):
             self._evict()
             if key in self.cache:
                 return self.cache[key][0]
-            print("The {key} doesn't exist in the cache")
+            self.logger.info("The {key} doesn't exist in the cache")
             return 
         
     def delete(self, key):
@@ -69,9 +69,9 @@ class Expiry(Cache):
             if key in self.cache:
                 del self.cache[key]
                 self._remove_from_heap(key)
-                print(f"{key} is deleted")
+                self.logger.info(f"{key} is deleted")
                 return "Item successfully removed"
-        print(f"{key} does not exist in the cache")
+        self.logger.info(f"{key} does not exist in the cache")
         return "The given key doesn't exist"
         
     def view(self):

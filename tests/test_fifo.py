@@ -1,5 +1,7 @@
 import unittest
 import threading
+from threading import Thread
+import random
 import sys
 sys.path.append('..')
 from src.fifo import FIFO
@@ -42,9 +44,6 @@ class FIFOTest(unittest.TestCase):
         self.assertIn("Key: key1, Value: value1", log.output[0])
         self.assertIn("Key: key2, Value: value2", log.output[1])
         self.assertIn("Key: key3, Value: value3", log.output[2])
-
-    ########### Thread Safety Tests ###################
-
 
 if __name__ == '__main__':
     unittest.main()
